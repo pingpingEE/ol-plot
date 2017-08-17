@@ -5,7 +5,6 @@
  */
 
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 class RectAngle extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()

@@ -4,7 +4,6 @@
  * @Inherits ol.geom.Polygon
  */
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 import * as PlotUtils from '../../Utils/utils'
 class Sector extends (ol.geom.Polygon) {
   constructor (points, params) {

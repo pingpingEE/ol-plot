@@ -3,7 +3,6 @@
  * @desc 标绘画圆算法，继承面要素相关方法和属性
  */
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 import * as Constants from '../../Constants'
 import * as PlotUtils from '../../Utils/utils'
 class Ellipse extends (ol.geom.Polygon) {

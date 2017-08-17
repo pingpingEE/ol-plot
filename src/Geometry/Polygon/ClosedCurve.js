@@ -4,7 +4,6 @@
  * @Inherits ol.geom.Polygon
  */
 import PlotTypes from '../../Utils/PlotTypes'
-import {ol} from '../../../constants'
 import * as PlotUtils from '../../Utils/utils'
 import * as Constants from '../../Constants'
 class ClosedCurve extends (ol.geom.Polygon) {

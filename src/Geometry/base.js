@@ -1,42 +1,11 @@
-/**
- * Created by FDD on 2017/5/22.
- * @desc 标绘画弓形算法，继承线要素相关方法和属性
- */
-import PlotTypes from '../../Utils/PlotTypes'
-import * as PlotUtils from '../../Utils/utils'
-class Arc extends (ol.geom.LineString) {
-  constructor (points, params) {
-    super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.ARC
-    this.fixPointCount = 3
-    this.set('params', params)
+class Plot {
+  constructor (points) {
     this.setPoints(points)
   }
-
   /**
    * 执行动作
    */
   generate () {
-    let count = this.getPointCount()
-    if (count < 2) return
-    if (count === 2) {
-      this.setCoordinates(this.points)
-    } else {
-      let [pnt1, pnt2, pnt3, startAngle, endAngle] = [this.points[0], this.points[1], this.points[2], null, null]
-      let center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3)
-      let radius = PlotUtils.MathDistance(pnt1, center)
-      let angle1 = PlotUtils.getAzimuth(pnt1, center)
-      let angle2 = PlotUtils.getAzimuth(pnt2, center)
-      if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-        startAngle = angle2
-        endAngle = angle1
-      } else {
-        startAngle = angle1
-        endAngle = angle2
-      }
-      this.setCoordinates(PlotUtils.getArcPoints(center, radius, startAngle, endAngle))
-    }
   }
 
   /**
@@ -121,4 +90,4 @@ class Arc extends (ol.geom.LineString) {
   }
 }
 
-export default Arc
+export default Plot

@@ -5,7 +5,6 @@
  */
 
 import PlotTypes from '../../Utils/PlotTypes'
-import {ol} from '../../../constants'
 import * as PlotUtils from '../../Utils/utils'
 import * as Constants from '../../Constants'
 class FineArrow extends (ol.geom.Polygon) {

@@ -1,8 +1,6 @@
-import { ol } from '../../constants'
-import EventType from './EventType'
-import { DomUtil } from '../../dom'
-import * as Events from '../../event/Events'
-const Observable = ol.Observable
+import EventType from '../Event/EventType'
+import Observable from 'observable-emit'
+import DomUtils from 'nature-dom-util'
 class PlotEdit extends Observable {
   constructor (map) {
     super()
@@ -76,12 +74,12 @@ class PlotEdit extends Observable {
     if (!parent) {
       return false
     } else {
-      let hiddenDiv = DomUtil.createHidden('div', parent, 'plot-helper-hidden-div')
+      let hiddenDiv = DomUtils.htmlUtils.createHidden('div', parent, 'plot-helper-hidden-div')
       let cPnts = this.getControlPoints()
       if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
         cPnts.forEach((item, index) => {
           let id = 'plot-helper-control-point-div' + '-' + index
-          DomUtil.create('div', 'plot-helper-control-point-div', hiddenDiv, id)
+          DomUtils.htmlUtils.create('div', 'plot-helper-control-point-div', hiddenDiv, id)
           this.elementTable[id] = index
         })
       }
@@ -110,18 +108,18 @@ class PlotEdit extends Observable {
         if (item && item instanceof ol.Overlay) {
           this.map.removeOverlay(item)
         }
-        let element = DomUtil.get('plot-helper-control-point-div' + '-' + index)
+        let element = DomUtils.htmlUtils.get('plot-helper-control-point-div' + '-' + index)
         if (element) {
-          DomUtil.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-          DomUtil.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+          DomUtils.Events.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+          DomUtils.Events.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
         }
       })
       this.controlPoints = []
     }
     let parent = this.getMapParentElement()
-    let hiddenDiv = DomUtil.get('plot-helper-hidden-div')
+    let hiddenDiv = DomUtils.htmlUtils.get('plot-helper-hidden-div')
     if (hiddenDiv && parent) {
-      DomUtil.remove(hiddenDiv, parent)
+      DomUtils.htmlUtils.remove(hiddenDiv, parent)
     }
   }
 
@@ -135,7 +133,7 @@ class PlotEdit extends Observable {
       cPnts.forEach((item, index) => {
         let id = 'plot-helper-control-point-div' + '-' + index
         this.elementTable[id] = index
-        let element = DomUtil.get(id)
+        let element = DomUtils.htmlUtils.get(id)
         let pnt = new ol.Overlay({
           id: id,
           position: cPnts[index],
@@ -145,8 +143,8 @@ class PlotEdit extends Observable {
         this.controlPoints.push(pnt)
         this.map.addOverlay(pnt)
         this.map.render()
-        DomUtil.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-        DomUtil.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+        DomUtils.Events.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+        DomUtils.Events.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
       })
     }
   }
@@ -166,8 +164,8 @@ class PlotEdit extends Observable {
   controlPointMouseDownHandler (e) {
     let id = e.target.id
     this.activeControlPointId = id
-    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
-    Events.listen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
+    DomUtils.Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
+    DomUtils.Events.listen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
   }
 
   /**
@@ -190,8 +188,8 @@ class PlotEdit extends Observable {
    * @param e
    */
   controlPointMouseUpHandler (e) {
-    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    Events.unlisten(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
   }
 
   /**
@@ -321,8 +319,8 @@ class PlotEdit extends Observable {
    */
   disconnectEventHandlers () {
     this.map.un('pointermove', this.plotMouseOverOutHandler, this)
-    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    Events.unlisten(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
     this.map.un('pointerdown', this.plotMouseDownHandler, this)
     this.map.un('pointerup', this.plotMouseUpHandler, this)
     this.map.un('pointerdrag', this.plotMouseMoveHandler, this)

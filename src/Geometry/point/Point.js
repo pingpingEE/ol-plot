@@ -3,21 +3,21 @@
  * @desc 点要素
  * @Inherits ol.geom.Point
  */
-import { ol } from '../../../constants'
 import PlotTypes from '../../Utils/PlotTypes'
-const GeomPoint = ol.geom.Point
-class Point extends GeomPoint {
+class Point extends (ol.geom.Point) {
   constructor (point, params) {
     super()
     ol.geom.Point.call(this, [])
     this.type = PlotTypes.POINT
     this.options = params || {}
     this.set('params', this.options)
+    this.fixPointCount = 1
     this.setPoints(point)
   }
 
   generate () {
-    this.setCoordinates(this.points)
+    let pnt = this.points[0]
+    this.setCoordinates(pnt)
   }
 
   /**

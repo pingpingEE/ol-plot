@@ -3,7 +3,6 @@
  * @desc 标绘曲线算法
  */
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 import * as PlotUtils from '../../Utils/utils'
 class Curve extends (ol.geom.LineString) {
   constructor (points, params) {

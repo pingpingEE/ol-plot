@@ -1,9 +1,8 @@
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 class Polyline extends (ol.geom.LineString) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
+    ol.geom.LineString.call(this)
     this.type = PlotTypes.POLYLINE
     this.set('params', params)
     this.setPoints(points)

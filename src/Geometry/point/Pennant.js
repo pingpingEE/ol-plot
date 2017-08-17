@@ -3,7 +3,6 @@
  * @desc 点要素
  * @Inherits ol.geom.Point
  */
-import { ol } from '../../../constants'
 import PlotTypes from '../../Utils/PlotTypes'
 const GeomPoint = ol.geom.Point
 class Pennant extends GeomPoint {

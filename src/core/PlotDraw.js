@@ -2,21 +2,16 @@
  * Created by FDD on 2017/5/15.
  * @desc PlotDraw
  */
-
-import { ol } from '../../constants'
+import mix from '../Utils/mixin'
 import { MathDistance } from '../Utils/utils'
-import EventType from './EventType'
-import * as Events from '../../event/Events'
-import mix from '../../utils/mixin'
-import Layer from '../../layer/Layer'
-import Plot from '../index'
-import Style from '../../style/Style'
+import EventType from '../Event/EventType'
 import PlotTypes from '../Utils/PlotTypes'
-const Observable = ol.Observable
-class PlotDraw extends mix(Observable, Plot, Layer, Style) {
+import Observable from 'observable-emit'
+import DomUtils from 'nature-dom-util'
+import PlotFactory from './PlotFactory'
+class PlotDraw extends mix(PlotFactory) {
   constructor (map, params) {
     super()
-    ol.Observable.call(this, [])
     if (map && map instanceof ol.Map) {
       this.map = map
     } else {
@@ -69,7 +64,7 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
      * 事件监听器
      * @type {*}
      */
-    this.Observable = new ol.Object()
+    this.Observable = new Observable()
 
     /**
      * 创建图层名称
@@ -97,6 +92,89 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
     this.map.on('click', this.mapFirstClickHandler, this)
     this.plotType = type
     this.plotParams = params || {}
+  }
+
+  /**
+   * 创建临时图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createVectorLayer (layerName, params) {
+    try {
+      if (this.map) {
+        let vectorLayer = this.getLayerByLayerName(layerName)
+        if (!(vectorLayer instanceof ol.layer.Vector)) {
+          vectorLayer = null
+        }
+        if (!vectorLayer) {
+          if (params && params.create) {
+            vectorLayer = new ol.layer.Vector({
+              layerName: layerName,
+              params: params,
+              layerType: 'vector',
+              source: new ol.source.Vector({
+                wrapX: false
+              }),
+              style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                  color: 'rgba(67, 110, 238, 0.4)'
+                }),
+                stroke: new ol.style.Stroke({
+                  color: '#7DC826',
+                  width: 2.5
+                }),
+                image: new ol.style.Icon({
+                  anchor: [0.5, 1],
+                  anchorXUnits: 'fraction',
+                  anchorYUnits: 'fraction',
+                  opacity: 0.75,
+                  src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADQ0lEQVRYR8VXTVIaURD+evABi0BYWhVJdJEEVsETBE8gngA4QfAEkhMIJ9CcQDyB4wkkK0w2EjFVWSJkAfPgderNODplzb+LvO3MdH+vv6/76yH850MvyT/axHZ+genOFNO0cRIBuCmhtCyKJoAWQLVnScfEbJJC/8NvOYwLKBYAO3FBHIGoYwdm/g6GyQbZNyfFJRDqIPr08NxkKdvVPxhHAYkE8KOcaTAZJwCVmPkSUrZ04NHWRp0MJ2FG8fD93epSUwIhTonoM8BTYtX+OFkPwkCEAhiVRYuITpxLczs/lwOrII6ZqOUXlJhPs3N5uCiIhvsd8fogDEQggJ9vRE1l6MpNnlEYqgwudCXCy8pTY429tYGaA4KnuZncCRJqIIBRWZh2KRX3eSV7lBVX0cldaDxlS+5CiC4RNZn5W3Ui/avmdxuH98wZwPe5mdxeFMTA4TXBYTZzc3mwLIoxQK/Zsnb8ROlbgest0YNBXzTyjELPpSJBevtVY827awMdXQWADyu3svc8hi8At/xaQIoyNQKOkia3tQN8BfNYa0F3UHUi64kAsFJ7REYHhP00AMA4Z1Y9MoyL1ABApIWUjP8HtPbcYO6mAaCHSdOuAKih9ZCqArqDwIPEAK7fig5Ax1o4zJi6QyUpCD28iFCyYynuV+6kM8o9x1+Em9imbPYG4GFuJvfcVkoGwGnhZUGY2iN0R/iZVNggeqQBhlFP2gl2ByhlhpXfNrKgWzlmY1y4VVgURM/p5+ij50d+LjvLotCju6a1VL1bmb7+ERZuVLadrQnGIDe32stXohspSMX93F/ZdZPrVqxMrEZQnlA3fFhA7FGqK8GWPLDLtiH0bPD6v7MfrJxJR1lx5iwsjg7CNqaY+4D2Bedoy2WoQWWyPvfeSvsHYOx7rTrKikM14A3+SEU0/U9vRJT+8UJxYmoqFsXskIB3cd5n4Fd+ZtXiLKuRFLgJvQtKFIgw1ccaREEJniZkMATd/9VbqxsFMhEF3mDX5ewgyB2DHC8MTGwK3CBBekjCuxdQYgD6Y0cPMJ35oA/fG2vUk/yQpKbA/fD5yl6dyNO4vL+4Am4AvTvqv6MkontRF6S5YdQ3qTQQFTTJ83/+27ww2VdnUwAAAABJRU5ErkJggg=='
+                })
+              })
+            })
+          }
+        }
+        if (this.map && vectorLayer) {
+          if (params && params.hasOwnProperty('selectable')) {
+            vectorLayer.set('selectable', params.selectable)
+          }
+          // 图层只添加一次
+          let _vectorLayer = this.getLayerByLayerName(layerName)
+          if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+            this.map.addLayer(vectorLayer)
+          }
+        }
+        return vectorLayer
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 通过layerName获取图层
+   * @param layerName
+   * @returns {*}
+   */
+  getLayerByLayerName (layerName) {
+    try {
+      let targetLayer = null
+      if (this.map) {
+        let layers = this.map.getLayers().getArray()
+        layers.every(layer => {
+          if (layer.get('layerName') === layerName) {
+            targetLayer = layer
+            return false
+          } else {
+            return true
+          }
+        })
+      }
+      return targetLayer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -134,7 +212,6 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
     this.drawLayer.getSource().addFeature(this.feature)
     this.map.un('click', this.mapFirstClickHandler, this)
     if (this.plotType === PlotTypes.POINT || this.plotType === PlotTypes.PENNANT) {
-      this.addPointStyle(this.feature, this.plotParams)
       this.plot.finishDrawing()
       this.drawEnd(event)
     } else {
@@ -142,22 +219,12 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
       if (!this.plot.freehand) {
         this.map.on('dblclick', this.mapDoubleClickHandler, this)
       }
-      Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
+      DomUtils.Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
     }
     if (this.plotType && this.feature) {
       this.plotParams['plotType'] = this.plotType
       this.feature.setProperties(this.plotParams)
     }
-  }
-
-  /**
-   * 添加点的样式
-   * @param feature
-   * @param params
-   */
-  addPointStyle (feature, params) {
-    let style = this.getStyleByPoint(params)
-    feature.setStyle(style)
   }
 
   /**
@@ -217,7 +284,7 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
   removeEventHandlers () {
     this.map.un('click', this.mapFirstClickHandler, this)
     this.map.un('click', this.mapNextClickHandler, this)
-    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this)
+    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this)
     this.map.un('dblclick', this.mapDoubleClickHandler, this)
   }
 
@@ -225,9 +292,9 @@ class PlotDraw extends mix(Observable, Plot, Layer, Style) {
    * 绘制结束
    */
   drawEnd (event) {
-    this.Observable.dispatchEvent({
+    this.Observable.dispatchSync({
       type: 'drawEnd',
-      event: event,
+      originalEvent: event,
       feature: this.feature
     })
     if (this.feature && this.options['isClear']) {

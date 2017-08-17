@@ -5,15 +5,14 @@
  */
 
 import PlotTypes from '../../Utils/PlotTypes'
-import { ol } from '../../../constants'
 class FreeHandLine extends (ol.geom.LineString) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.FREEHAND_LINE
+    this.type = PlotTypes.FREE_LINE
     this.freehand = true
     this.set('params', params)
     this.setPoints(points)
+    ol.geom.LineString.call(this, [])
   }
 
   /**

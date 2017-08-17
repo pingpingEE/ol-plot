@@ -5,7 +5,6 @@
  */
 
 import PlotTypes from '../../Utils/PlotTypes'
-import {ol} from '../../../constants'
 import * as Constants from '../../Constants'
 import * as PlotUtils from '../../Utils/utils'
 class DoubleArrow extends (ol.geom.Polygon) {

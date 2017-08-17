@@ -1,7 +1,7 @@
 /**
  * Created by FDD on 2017/5/20.
  */
-const PlotTypes = {
+module.exports = {
   ARC: 'Arc',
   CURVE: 'Curve',
   GATHERING_PLACE: 'GatheringPlace',
@@ -26,5 +26,3 @@ const PlotTypes = {
   SQUAD_COMBAT: 'SquadCombat',
   TAILED_SQUAD_COMBAT: 'TailedSquadCombat'
 }
-
-export default PlotTypes
