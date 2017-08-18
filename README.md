@@ -27,11 +27,7 @@ gulp compact-css
 
 其他示例请参看example文件夹
 
-[标绘操作](../../blob/V1.0.0/examples/index.html)
-
-{% raw %}
-{% sometag %}
-{% endraw %}
+[标绘demo](http://htmlpreview.github.io/?https://github.com/pingpingEE/ol-plot/blob/V1.0.0/examples/index.html)
 
 #### plotDraw Methods
 
