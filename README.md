@@ -26,7 +26,7 @@ gulp compact-css
 [标绘demo](http://htmlpreview.github.io/?https://github.com/pingpingEE/ol-plot/blob/V1.0.0/examples/index.html)
 ![标绘图](https://github.com/pingpingEE/ol-plot/blob/V1.0.0/images/readme/plot.png)
 
-其他示例请参看example文件夹
+其他示例请参看examples文件夹
 
 #### plotDraw Methods
 
@@ -38,6 +38,10 @@ gulp compact-css
 
 > 结束标绘
 
+##### `isDrawing()`
+
+> 当前是否在绘制
+
 ##### `setMap(map)`
 
 > 设置当前地图实例
@@ -48,6 +52,17 @@ gulp compact-css
 | :--- | :--- | :---------- |
 | `map` | `ol.Map` | 地图实例 |
 
+##### `drawEnd()`
+
+> 绘制结束
+
+##### `deactivateMapTools()`
+
+> 取消地图交互工具
+
+##### `activateMapTools()`
+
+> 激活地图交互工具
 
 #### plotEdit Methods
 
@@ -68,3 +83,31 @@ gulp compact-css
 | key | type | desc |
 | :--- | :--- | :---------- |
 | `map` | `ol.Map` | 地图实例 |
+
+##### `initHelperDom()`
+
+> 初始化dom提示
+
+##### `getMapParentElement()`
+
+> 获得地图父级元素
+
+##### `destroyHelperDom()`
+
+> 销毁帮助提示dom
+
+#####  `initControlPoints()`
+
+> 初始化控制点
+
+##### `getControlPoints()`
+
+> 获得控制点
+
+##### `disableMapDragPan()`
+
+> 禁用控制点拖拽
+
+##### `enableMapDragPan()`
+
+> 启用控制点拖拽
