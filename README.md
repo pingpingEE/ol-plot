@@ -23,11 +23,10 @@ gulp compact-css
 > `new olPlot.PlotEdit(map) 初始化标绘编辑工具`
 
 ## Examples
-
+[标绘demo](http://htmlpreview.github.io/?https://github.com/pingpingEE/ol-plot/blob/V1.0.0/examples/index.html)
+![标绘图](https://github.com/pingpingEE/ol-plot/blob/V1.0.0/images/readme/plot.png)
 
 其他示例请参看example文件夹
-
-[标绘demo](http://htmlpreview.github.io/?https://github.com/pingpingEE/ol-plot/blob/V1.0.0/examples/index.html)
 
 #### plotDraw Methods
 
