@@ -30,31 +30,7 @@ gulp compact-css
 [标绘操作](../../blob/V1.0.0/examples/index.html)
 
 {% raw %}
-<link rel="stylesheet" href="./lib/map/HMap.css" type="text/css">
-<script src="./lib/map/HMap.js"></script>
-<style>
-.map {
-  width: 100%;
-  height: 300px;
-}
-</style>
-<div id="map" class="map"></div>
-<script type="text/javascript">
-  var Maps = new HMap.Map();
-  Maps.initMap('map', {
-    view: {
-      center: [0, 0],
-      enableRotation: true, // 是否允许旋转
-      projection: 'EPSG:3857',
-      rotation: 0,
-      zoom: 5, // resolution
-      zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
-    },
-    logo: {},
-    baseLayers: [] // 不传时默认加载OSM地图。
-  });
-  console.log(Maps);
-</script>
+{% sometag %}
 {% endraw %}
 
 #### plotDraw Methods
